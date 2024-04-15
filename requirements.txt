@@ -1,0 +1,17 @@
+pyyaml
+prometheus_api_client
+pandas
+matplotlib
+seaborn
+networkx
+scipy
+statmodels
+pmdarima
+tqdm
+xgboost
+torch
+kubernetes
+prometheus_api_client
+pyyaml
+retrying
+numpy

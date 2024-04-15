@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  function_running_time_profilers: '{"textgeneration": {"cpu": "[0,0,0,0]", "gpu":"[0,0,0,0]"}}'
+kind: ConfigMap
+metadata:
+  name: function-running-time-profiler-cm
+  namespace: openfaas-fn

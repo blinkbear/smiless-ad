@@ -1,0 +1,84 @@
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: openfaas-fn
+  name: optimizer-engine 
+rules:
+  - apiGroups: [""] # The API group "" indicates the core API Group.
+    resources:
+    - configmaps
+    - secrets
+    - nodes
+    - nodes/metrics
+    - nodes/stats
+    - nodes/log
+    - nodes/spec
+    - nodes/proxy
+    - pods
+    - services
+    - namespaces
+    - proxy
+    verbs:
+    - list
+    - watch
+    - get
+  - apiGroups: [""]
+    resources:
+    - configmaps
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["apps"]
+    resources:
+    - deployments
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups:
+    - extensions
+    resources:
+    - daemonsets
+    - replicasets
+    - ingresses
+    verbs:
+    - list
+    - watch
+  - apiGroups:
+    - keda.sh
+    resources:
+    - scaledobjects
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups:
+    - apps
+    resources:
+    - statefulsets
+    - daemonsets
+    - deployments
+    - replicasets
+    verbs:
+    - list
+    - watch
+  - apiGroups:
+    - batch
+    resources:
+    - cronjobs
+    - jobs
+    verbs:
+    - list
+    - watch
+  - apiGroups:
+    - autoscaling
+    resources:
+    - horizontalpodautoscalers
+    verbs:
+    - list
+    - watch
+  - apiGroups:
+    - authentication.k8s.io
+    resources:
+    - tokenreviews
+    verbs:
+    - create
+  - apiGroups:
+    - authorization.k8s.io
+    resources:
+    - subjectaccessreviews
+    verbs:
+    - create
+    nonResourceURLs: []

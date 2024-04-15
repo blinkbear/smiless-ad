@@ -1,0 +1,458 @@
+{
+    "minio": {
+        "MINIO_ENDPOINT": "192.168.0.102:30902",
+        "MINIO_ACCESS_KEY": "admin",
+        "MINIO_SECRET_KEY": "admin123"
+    },
+    "concurrency": 32,
+    "repeat": 10,
+    "default_params": {
+        "cpu": 1,
+        "memory": 20480,
+        "cuda": 10,
+        "input_size": 10,
+        "warm_cold": "warm",
+        "max_batch_size": 32,
+        "invoking_type": "batching"
+    },
+    "resource_quantity": {
+        "imagerecognition": {
+            "cpu": {
+                "min": 0,
+                "max": 5,
+                "step": 1
+            },
+            "cuda": {
+                "min": 10,
+                "max": 110,
+                "step": 10
+            }
+        },
+        "distilbert": {
+            "cpu": {
+                "min": 0,
+                "max": 5,
+                "step": 1
+            },
+            "cuda": {
+                "min": 10,
+                "max": 110,
+                "step": 10
+            }
+        },
+        "textgeneration": {
+            "cpu": {
+                "min": 0,
+                "max": 5,
+                "step": 1
+            },
+            "cuda": {
+                "min": 10,
+                "max": 110,
+                "step": 10
+            }
+        },
+        "translation": {
+            "cpu": {
+                "min": 0,
+                "max": 5,
+                "step": 1
+            },
+            "cuda": {
+                "min": 10,
+                "max": 110,
+                "step": 10
+            }
+        },
+        "facerecognition": {
+            "cpu": {
+                "min": 0,
+                "max": 5,
+                "step": 1
+            },
+            "cuda": {
+                "min": 10,
+                "max": 110,
+                "step": 10
+            }
+        },
+        "humanactivitypose": {
+            "cpu": {
+                "min": 0,
+                "max": 5,
+                "step": 1
+            },
+            "cuda": {
+                "min": 10,
+                "max": 110,
+                "step": 10
+            }
+        },
+        "nameentityrecognition": {
+            "cpu": {
+                "min": 0,
+                "max": 5,
+                "step": 1
+            },
+            "cuda": {
+                "min": 10,
+                "max": 110,
+                "step": 10
+            }
+        },
+        "objectdetection": {
+            "cpu": {
+                "min": 0,
+                "max": 5,
+                "step": 1
+            },
+            "cuda": {
+                "min": 10,
+                "max": 110,
+                "step": 10
+            }
+        },
+        "questionanswering": {
+            "cpu": {
+                "min": 0,
+                "max": 5,
+                "step": 1
+            },
+            "cuda": {
+                "min": 10,
+                "max": 110,
+                "step": 10
+            }
+        },
+        "speechrecognition": {
+            "cpu": {
+                "min": 0,
+                "max": 5,
+                "step": 1
+            },
+            "cuda": {
+                "min": 10,
+                "max": 110,
+                "step": 10
+            }
+        },
+        "texttospeech": {
+            "cpu": {
+                "min": 0,
+                "max": 5,
+                "step": 1
+            },
+            "cuda": {
+                "min": 10,
+                "max": 110,
+                "step": 10
+            }
+        },
+        "topicmodeling": {
+            "cpu": {
+                "min": 0,
+                "max": 5,
+                "step": 1
+            },
+            "cuda": {
+                "min": 10,
+                "max": 110,
+                "step": 10
+            }
+        }
+    },
+    "batch_size": {
+        "imagerecognition": {
+            "min": 1,
+            "max": 6,
+            "step": 1
+        },
+        "textgeneration": {
+            "min": 1,
+            "max": 6,
+            "step": 1
+        },
+        "translation": {
+            "min": 1,
+            "max": 6,
+            "step": 1
+        },
+        "distilbert": {
+            "min": 1,
+            "max": 6,
+            "step": 1
+        },
+        "facerecognition": {
+            "min": 1,
+            "max": 6,
+            "step": 1
+        },
+        "humanactivitypose": {
+            "min": 1,
+            "max": 6,
+            "step": 1
+        },
+        "nameentityrecognition": {
+            "min": 1,
+            "max": 6,
+            "step": 1
+        },
+        "objectdetection": {
+            "min": 1,
+            "max": 6,
+            "step": 1
+        },
+        "questionanswering": {
+            "min": 1,
+            "max": 6,
+            "step": 1
+        },
+        "speechrecognition": {
+            "min": 1,
+            "max": 6,
+            "step": 1
+        },
+        "texttospeech": {
+            "min": 1,
+            "max": 6,
+            "step": 1
+        },
+        "topicmodeling": {
+            "min": 1,
+            "max": 6,
+            "step": 1
+        }
+    },
+    "function_profiles": [
+        "imagerecognition",
+        "textgeneration",
+        "translation",
+        "distilbert",
+        "finbert",
+        "facedetection",
+        "facerecognition",
+        "humanactivitypose",
+        "humansegmentation",
+        "nameentityrecognition",
+        "objectdetection",
+        "partofspeech",
+        "questionanswering",
+        "speechrecognition",
+        "texttospeech",
+        "topicmodeling",
+        "wordchunking"
+    ],
+    "functions_info": {
+        "imagerecognition": {
+            "image_size": 6360,
+            "types": "imagerecognition",
+            "image": "10.119.46.41:30003/cc/openfaas/imagerecognition:latest"
+        },
+        "textgeneration": {
+            "image_size": 6840,
+            "types": "textgeneration",
+            "image": "10.119.46.41:30003/cc/openfaas/textgeneration:latest"
+        },
+        "translation": {
+            "image_size": 6570,
+            "types": "translation",
+            "image": "10.119.46.41:30003/cc/openfaas/translation:latest"
+        },
+        "distilbert": {
+            "image_size": 6530,
+            "types": "distilbert",
+            "image": "10.119.46.41:30003/cc/openfaas/distilbert:latest"
+        },
+        "finbert": {
+            "image_size": 6700,
+            "types": "finbert",
+            "image": "10.119.46.41:30003/cc/openfaas/finbert:latest"
+        },
+        "facedetection": {
+            "image_size": 6450,
+            "types": "facedetection",
+            "image": "10.119.46.41:30003/cc/openfaas/facedetection:latest"
+        },
+        "facerecognition": {
+            "image_size": 6450,
+            "types": "facerecognition",
+            "image": "10.119.46.41:30003/cc/openfaas/facerecognition:latest"
+        },
+        "humanactivitypose": {
+            "image_size": 7250,
+            "types": "humanactivitypose",
+            "image": "10.119.46.41:30003/cc/openfaas/humanactivitypose:latest"
+        },
+        "humansegmentation": {
+            "image_size": 6700,
+            "types": "humansegmentation",
+            "image": "10.119.46.41:30003/cc/openfaas/humansegmentation:latest"
+        },
+        "nameentityrecognition": {
+            "image_size": 7210,
+            "types": "nameentityrecognition",
+            "image": "10.119.46.41:30003/cc/openfaas/nameentityrecognition:latest"
+        },
+        "objectdetection": {
+            "image_size": 6500,
+            "types": "objectdetection",
+            "image": "10.119.46.41:30003/cc/openfaas/objectdetection:latest"
+        },
+        "partofspeech": {
+            "image_size": 7210,
+            "types": "partofspeech",
+            "image": "10.119.46.41:30003/cc/openfaas/partofspeech:latest"
+        },
+        "questionanswering": {
+            "image_size": 6760,
+            "types": "questionanswering",
+            "image": "10.119.46.41:30003/cc/openfaas/questionanswering:latest"
+        },
+        "speechrecognition": {
+            "image_size": 7140,
+            "types": "speechrecognition",
+            "image": "10.119.46.41:30003/cc/openfaas/speechrecognition:latest"
+        },
+        "texttospeech": {
+            "image_size": 7560,
+            "types": "texttospeech",
+            "image": "10.119.46.41:30003/cc/openfaas/texttospeech:latest"
+        },
+        "topicmodeling": {
+            "image_size": 6930,
+            "types": "topicmodeling",
+            "image": "10.119.46.41:30003/cc/openfaas/topicmodeling:latest"
+        },
+        "wordchunking": {
+            "image_size": 7210,
+            "types": "wordchunking",
+            "image": "10.119.46.41:30003/cc/openfaas/wordchunking:latest"
+        }
+    },
+    "warm_or_cold": {
+        "imagerecognition": [
+            "cold",
+            "warm"
+        ],
+        "textgeneration": [
+            "cold",
+            "warm"
+        ],
+        "translation": [
+            "cold",
+            "warm"
+        ],
+        "distilbert": [
+            "cold",
+            "warm"
+        ],
+        "facerecognition": [
+            "cold",
+            "warm"
+        ],
+        "humanactivitypose": [
+            "cold",
+            "warm"
+        ],
+        "nameentityrecognition": [
+            "cold",
+            "warm"
+        ],
+        "objectdetection": [
+            "cold",
+            "warm"
+        ],
+        "questionanswering": [
+            "cold",
+            "warm"
+        ],
+        "speechrecognition": [
+            "cold",
+            "warm"
+        ],
+        "texttospeech": [
+            "cold",
+            "warm"
+        ],
+        "topicmodeling": [
+            "cold",
+            "warm"
+        ]
+    },
+    "openfaas": {
+        "url": "http://10.119.46.42:31112/function",
+        "passwd": "sWsVc8uuyJPe",
+        "gateway": "10.119.46.42:31112"
+    },
+    "test_config": {
+        "resource_quantity": {
+            "backend": [
+                "cpu",
+                "cuda"
+            ],
+            "namespace": "openfaas-fn",
+            "test_type": [
+                "resource_quantity"
+            ],
+            "server": [
+                "all"
+            ],
+            "save_result": "True",
+            "skip_functions": [],
+            "rerun": []
+        },
+        "batch_size": {
+            "backend": [
+                "cpu",
+                "cuda"
+            ],
+            "namespace": "openfaas-fn",
+            "test_type": [
+                "batch_size"
+            ],
+            "server": [
+                "all"
+            ],
+            "save_result": "True",
+            "skip_functions": [],
+            "rerun": []
+        },
+        "warm_cold": {
+            "backend": [
+                "cpu",
+                "cuda"
+            ],
+            "namespace": "openfaas-fn",
+            "test_type": [
+                "warm_or_cold"
+            ],
+            "server": [
+                "all"
+            ],
+            "save_result": "True",
+            "skip_functions": [],
+            "rerun": []
+        },
+        "all": {
+            "backend": [
+                "cpu",
+                "cuda"
+            ],
+            "namespace": "openfaas-fn",
+            "test_type": [
+                "resource_quantity",
+                "warm_or_cold",
+                "batch_size"
+            ],
+            "server": [
+                "all"
+            ],
+            "save_result": "True",
+            "skip_functions": [],
+            "rerun": []
+        }
+    },
+    "test": [
+        "all"
+    ]
+}

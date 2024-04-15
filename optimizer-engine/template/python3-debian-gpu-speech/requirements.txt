@@ -1,0 +1,4 @@
+sentencepiece
+transformers
+fairseq-0.12.2-cp37-cp37m-linux_x86_64.whl
+g2p_en-2.0.0-py3-none-any.whl

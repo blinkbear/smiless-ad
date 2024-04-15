@@ -1,0 +1,79 @@
+{
+    "workflows": {
+        "long-workflow": {
+            "SLA": 10,
+            "node": [
+                "speechrecognition",
+                "topicmodeling",
+                "textgeneration",
+                "distilbert",
+                "questionanswering",
+                "translation",
+                "texttospeech",
+                "humanactivitypose",
+                "facerecognition",
+                "nameentityrecognition",
+                "objectdetection",
+                "imagerecognition"
+            ],
+            "entryPoint": "speechrecognition",
+            "edges": [
+                {
+                    "source": "speechrecognition",
+                    "target": "topicmodeling",
+                    "weight": 1
+                },
+                {
+                    "source": "topicmodeling",
+                    "target": "textgeneration",
+                    "weight": 1
+                },
+                {
+                    "source": "textgeneration",
+                    "target": "distilbert",
+                    "weight": 1
+                },
+                {
+                    "source": "distilbert",
+                    "target": "questionanswering",
+                    "weight": 1
+                },
+                {
+                    "source": "questionanswering",
+                    "target": "translation",
+                    "weight": 1
+                },
+                {
+                    "source": "translation",
+                    "target": "texttospeech",
+                    "weight": 1
+                },
+                {
+                    "source": "texttospeech",
+                    "target": "humanactivitypose",
+                    "weight": 1
+                },
+                {
+                    "source": "humanactivitypose",
+                    "target": "facerecognition",
+                    "weight": 1
+                },
+                {
+                    "source": "facerecognition",
+                    "target": "nameentityrecognition",
+                    "weight": 1
+                },
+                {
+                    "source": "nameentityrecognition",
+                    "target": "objectdetection",
+                    "weight": 1
+                },
+                {
+                    "source": "objectdetection",
+                    "target": "imagerecognition",
+                    "weight": 1
+                }
+            ]
+        }
+    }
+}

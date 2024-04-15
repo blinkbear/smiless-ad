@@ -1,0 +1,89 @@
+{
+    "image_sizes": {
+        "imagerecognition": {
+            "image_size": 6360,
+            "types": "imagerecognition",
+            "image": "blinkbear/smiless-imagerecognition:latest"
+        },
+        "textgeneration": {
+            "image_size": 6840,
+            "types": "textgeneration",
+            "image": "blinkbear/smiless-textgeneration:latest"
+        },
+        "translation": {
+            "image_size": 6570,
+            "types": "translation",
+            "image": "blinkbear/smiless-translation:latest"
+        },
+        "distilbert": {
+            "image_size": 6530,
+            "types": "distilbert",
+            "image": "blinkbear/smiless-distilbert:latest"
+        },
+        "finbert": {
+            "image_size": 6700,
+            "types": "finbert",
+            "image": "blinkbear/smiless-finbert:latest"
+        },
+        "facedetection": {
+            "image_size": 6450,
+            "types": "facedetection",
+            "image": "blinkbear/smiless-facedetection:latest"
+        },
+        "facerecognition": {
+            "image_size": 6450,
+            "types": "facerecognition",
+            "image": "blinkbear/smiless-facerecognition:latest"
+        },
+        "humanactivitypose": {
+            "image_size": 7250,
+            "types": "humanactivitypose",
+            "image": "blinkbear/smiless-humanactivitypose:latest"
+        },
+        "humansegmentation": {
+            "image_size": 6700,
+            "types": "humansegmentation",
+            "image": "blinkbear/smiless-humansegmentation:latest"
+        },
+        "nameentityrecognition": {
+            "image_size": 7210,
+            "types": "nameentityrecognition",
+            "image": "blinkbear/smiless-nameentityrecognition:latest"
+        },
+        "objectdetection": {
+            "image_size": 6500,
+            "types": "objectdetection",
+            "image": "blinkbear/smiless-objectdetection:latest"
+        },
+        "partofspeech": {
+            "image_size": 7210,
+            "types": "partofspeech",
+            "image": "blinkbear/smiless-partofspeech:latest"
+        },
+        "questionanswering": {
+            "image_size": 6760,
+            "types": "questionanswering",
+            "image": "blinkbear/smiless-questionanswering:latest"
+        },
+        "speechrecognition": {
+            "image_size": 7140,
+            "types": "speechrecognition",
+            "image": "blinkbear/smiless-speechrecognition:latest"
+        },
+        "texttospeech": {
+            "image_size": 7560,
+            "types": "texttospeech",
+            "image": "blinkbear/smiless-texttospeech:latest"
+        },
+        "topicmodeling": {
+            "image_size": 6930,
+            "types": "topicmodeling",
+            "image": "blinkbear/smiless-topicmodeling:latest"
+        },
+        "wordchunking": {
+            "image_size": 7210,
+            "types": "wordchunking",
+            "image": "blinkbear/smiless-wordchunking:latest"
+        }
+    }
+}

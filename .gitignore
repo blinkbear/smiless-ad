@@ -1,0 +1,13 @@
+*/build/
+helm/
+*pth
+*__pycache__*
+*results*
+.backup
+tokenizer/
+*.csv
+datasets*
+*blobs*
+*snapshots*
+*refs*
+*.pdf

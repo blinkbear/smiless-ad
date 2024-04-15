@@ -1,0 +1,19 @@
+{
+    "distilbert": [0.3, 0.7],
+    "finbert": [0.2, 0.8],
+    "imagerecognition": [0.4, 0.6],
+    "textgeneration": [0.5, 0.5],
+    "translation": [0.1, 0.9],
+    "facedetection": [0.6, 0.4],
+    "facerecognition": [0.7, 0.3],
+    "humanactivitypose": [0.8, 0.2],
+    "humansegmentation": [0.5, 0.5],
+    "nameentityrecognition": [0.4, 0.6],
+    "objectdetection": [0.5, 0.5],
+    "partofspeech": [0.6, 0.4],
+    "questionanswering": [0.7, 0.3],
+    "speechrecognition": [0.8, 0.2],
+    "texttospeech": [0.9, 0.1],
+    "topicmodeling": [0.1, 0.9],
+    "wordchunking": [0.2, 0.8]
+}

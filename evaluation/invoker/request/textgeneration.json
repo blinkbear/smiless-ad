@@ -1,0 +1,7 @@
+{
+    "req1": {
+        "inputs": {
+            "demo": "{\"inputs\": \"Long ago in France there lived a King and Queen.\",\"input_length\": 20}"
+        }
+    }
+}

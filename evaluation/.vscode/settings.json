@@ -1,0 +1,44 @@
+{
+    "python.formatting.provider": "none",
+    "cSpell.words": [
+        "argsort",
+        "astype",
+        "configmap",
+        "cuda",
+        "dataframe",
+        "distilbert",
+        "faas",
+        "facedetection",
+        "facerecognition",
+        "finbert",
+        "Gbps",
+        "humanactivitypose",
+        "humansegmentation",
+        "iloc",
+        "imagerecognition",
+        "isin",
+        "iterrows",
+        "levelname",
+        "nameentityrecognition",
+        "networkx",
+        "openfaas",
+        "partofspeech",
+        "pretrained",
+        "sharings",
+        "smiless",
+        "softmax",
+        "SOURCEDIR",
+        "speechrecognition",
+        "texttospeech",
+        "topicmodeling",
+        "wordchunking"
+    ],
+    "python.analysis.extraPaths": [
+        "./benchmarks/inference_backend",
+        "./benchmarks/inference_backend"
+    ],
+    "python.analysis.typeCheckingMode": "off",
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff"
+    }
+}

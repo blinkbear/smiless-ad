@@ -1,0 +1,10 @@
+networkx
+kubernetes
+pyyaml
+pandas
+numpy
+readerwriterlock
+mpire
+scipy
+retrying
+rich

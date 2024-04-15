@@ -1,0 +1,230 @@
+{
+    "concurrency": 16,
+    "interval_time_unit": 2,
+    "SLAs": [2,3,4,5,6],
+    "default_params": {
+        "cpu": 1,
+        "memory": 20480,
+        "cuda": 10,
+        "warm_cold": "warm",
+        "batch_size": 16,
+        "invoking_type": "batching"
+    },
+    "function_profiles": [
+        "imagerecognition",
+        "textgeneration",
+        "translation",
+        "distilbert",
+        "finbert",
+        "facedetection",
+        "facerecognition",
+        "humanactivitypose",
+        "humansegmentation",
+        "nameentityrecognition",
+        "objectdetection",
+        "partofspeech",
+        "questionanswering",
+        "speechrecognition",
+        "texttospeech",
+        "topicmodeling",
+        "wordchunking"
+    ],
+    "functions_info": {
+        "imagerecognition": {
+            "image_size": 6360,
+            "types": "imagerecognition",
+            "image": "blinkbear/smiless-imagerecognition:latest"
+        },
+        "textgeneration": {
+            "image_size": 6840,
+            "types": "textgeneration",
+            "image": "blinkbear/smiless-textgeneration:latest"
+        },
+        "translation": {
+            "image_size": 6570,
+            "types": "translation",
+            "image": "blinkbear/smiless-translation:latest"
+        },
+        "distilbert": {
+            "image_size": 6530,
+            "types": "distilbert",
+            "image": "blinkbear/smiless-distilbert:latest"
+        },
+        "finbert": {
+            "image_size": 6700,
+            "types": "finbert",
+            "image": "blinkbear/smiless-finbert:latest"
+        },
+        "facedetection": {
+            "image_size": 6450,
+            "types": "facedetection",
+            "image": "blinkbear/smiless-facedetection:latest"
+        },
+        "facerecognition": {
+            "image_size": 6450,
+            "types": "facerecognition",
+            "image": "blinkbear/smiless-facerecognition:latest"
+        },
+        "humanactivitypose": {
+            "image_size": 7250,
+            "types": "humanactivitypose",
+            "image": "blinkbear/smiless-humanactivitypose:latest"
+        },
+        "humansegmentation": {
+            "image_size": 6700,
+            "types": "humansegmentation",
+            "image": "blinkbear/smiless-humansegmentation:latest"
+        },
+        "nameentityrecognition": {
+            "image_size": 7210,
+            "types": "nameentityrecognition",
+            "image": "blinkbear/smiless-nameentityrecognition:latest"
+        },
+        "objectdetection": {
+            "image_size": 6500,
+            "types": "objectdetection",
+            "image": "blinkbear/smiless-objectdetection:latest"
+        },
+        "partofspeech": {
+            "image_size": 7210,
+            "types": "partofspeech",
+            "image": "blinkbear/smiless-partofspeech:latest"
+        },
+        "questionanswering": {
+            "image_size": 6760,
+            "types": "questionanswering",
+            "image": "blinkbear/smiless-questionanswering:latest"
+        },
+        "speechrecognition": {
+            "image_size": 7140,
+            "types": "speechrecognition",
+            "image": "blinkbear/smiless-speechrecognition:latest"
+        },
+        "texttospeech": {
+            "image_size": 7560,
+            "types": "texttospeech",
+            "image": "blinkbear/smiless-texttospeech:latest"
+        },
+        "topicmodeling": {
+            "image_size": 6930,
+            "types": "topicmodeling",
+            "image": "blinkbear/smiless-topicmodeling:latest"
+        },
+        "wordchunking": {
+            "image_size": 7210,
+            "types": "wordchunking",
+            "image": "blinkbear/smiless-wordchunking:latest"
+        }
+    },
+    "workflows": {
+        "Voice-Assitant": {
+            "node": [
+                "speechrecognition",
+                "topicmodeling",
+                "nameentityrecognition",
+                "textgeneration",
+                "texttospeech"
+            ],
+            "entryPoint": "speechrecognition",
+            "edges": [
+                {
+                    "source": "speechrecognition",
+                    "target": "topicmodeling",
+                    "weight": 1
+                },
+                {
+                    "source": "topicmodeling",
+                    "target": "textgeneration",
+                    "weight": 1
+                },
+                {
+                    "source": "speechrecognition",
+                    "target": "nameentityrecognition",
+                    "weight": 1
+                },
+                {
+                    "source": "nameentityrecognition",
+                    "target": "textgeneration",
+                    "weight": 1
+                },
+                {
+                    "source": "textgeneration",
+                    "target": "texttospeech",
+                    "weight": 1
+                }
+            ]
+        },
+        "AMBER-Alert": {
+            "entryPoint": "objectdetection",
+            "node": [
+                "objectdetection",
+                "humanactivitypose",
+                "facerecognition",
+                "imagerecognition",
+                "translation"
+            ],
+            "edges": [
+                {
+                    "source": "objectdetection",
+                    "target": "humanactivitypose",
+                    "weight": 1
+                },
+                {
+                    "source": "humanactivitypose",
+                    "target": "facerecognition",
+                    "weight": 1
+                },
+                {
+                    "source": "facerecognition",
+                    "target": "imagerecognition",
+                    "weight": 1
+                },
+                {
+                    "source": "objectdetection",
+                    "target": "imagerecognition",
+                    "weight": 1
+                },
+                {
+                    "source": "imagerecognition",
+                    "target": "translation",
+                    "weight": 1
+                }
+            ]
+        },
+        "Image-Query": {
+            "node": [
+                "imagerecognition",
+                "distilbert",
+                "questionanswering"
+            ],
+            "entryPoint": "imagerecognition",
+            "edges": [
+                {
+                    "source": "imagerecognition",
+                    "target": "distilbert",
+                    "weight": 1
+                },
+                {
+                    "source": "distilbert",
+                    "target": "questionanswering",
+                    "weight": 1
+                }
+            ]
+        }
+    },
+    "optimizers": [
+        "smiless",
+        "icebreaker",
+        "orion",
+        "aquatope",
+        "grandslam",
+        "smiless-homo",
+        "smiless-no-dag",
+        "smiless-opt"
+    ],
+    "openfaas": {
+        "url": "http://127.0.0.1:31112/function",
+        "passwd": "openfaas",
+        "gateway": "127.0.0.1:31112"
+    }
+}

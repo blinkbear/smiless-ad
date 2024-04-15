@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  initialization_time: '{"textgeneration": {"cpu-sigma": 0, "gpu-sigma": 0, "gpu-mu":
+    0, "cpu-mu": 0}}'
+  coefficient: "1"
+  cs_time: '{"textgeneration":{"cpu":0,"gpu":0}}'
+kind: ConfigMap
+metadata:
+  name: faas-initialization-cm
+  namespace: openfaas-fn

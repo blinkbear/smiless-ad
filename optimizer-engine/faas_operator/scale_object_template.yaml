@@ -1,0 +1,21 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: cpu-scaledobject
+  namespace: openfaas-fn
+spec:
+  cooldownPeriod: 0
+  idleReplicaCount: 0
+  maxReplicaCount: 1
+  minReplicaCount: 1
+  pollingInterval: 2
+  scaleTargetRef:
+    name: template
+  triggers:
+  - metadata:
+      invocation: '1000'
+      invocationInterval: '2'
+      scalerAddress: externalscaler.keda:6000
+      target: template
+      targetNamespace: openfaas-fn
+    type: external-push

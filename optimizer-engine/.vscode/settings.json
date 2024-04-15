@@ -1,0 +1,41 @@
+{
+    "cSpell.words": [
+        "ampli",
+        "Aquatope",
+        "arange",
+        "Astar",
+        "astype",
+        "configmap",
+        "cooldown",
+        "cuda",
+        "detrended",
+        "faas",
+        "fftfreq",
+        "freqdom",
+        "Gbps",
+        "grandslam",
+        "iloc",
+        "imagerecognition",
+        "incluster",
+        "isin",
+        "iterrows",
+        "kconf",
+        "keda",
+        "lambdax",
+        "mpire",
+        "networkx",
+        "notrend",
+        "nrows",
+        "openfaas",
+        "polyfit",
+        "rwlock",
+        "scaledobjects",
+        "smiless",
+        "speechrecognition",
+        "tasis"
+    ],
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff"
+    },
+    "python.formatting.provider": "none"
+}

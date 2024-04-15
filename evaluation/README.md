@@ -1,0 +1,1 @@
+This project is a collection of inference models running on the [Kubernetes](https://kubernetes.io/) with [OpenFaas](https://www.openfaas.com/).

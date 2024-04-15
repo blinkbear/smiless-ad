@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: optimizer-engine-deployment
+  namespace: openfaas-fn
+spec:
+  selector:
+    matchLabels:
+      app: optimizer-engine
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: optimizer-engine
+    spec:
+      containers:
+      - name: optimizer-engine
+        image:  blinkbear/smiless-optimizer-engine:latest
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: "4"
+            memory: 2048Mi
+          requests:
+            cpu: "2"
+            memory: 1024Mi
+        env:
+          - name: gateway
+            value: "192.168.0.102"
+          - name: port
+            value: "31112"
+          - name: passwd
+            value: "sWsVc8uuyJPe"
+        command:
+          - python
+          - main.py
+      tolerations:
+        - key: "node-role.kubernetes.io/master"
+          operator: "Exists"
+          value: ""
+          effect: "NoSchedule"
+      serviceAccountName: optimizer-engine
+        

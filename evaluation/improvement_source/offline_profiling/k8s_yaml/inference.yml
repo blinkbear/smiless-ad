@@ -1,0 +1,289 @@
+functions:
+  distilbert:
+    environment:
+      BACKEND: cuda
+      BACKEND_PORT: '34242'
+      BASIC_URL: http://127.0.0.1:31112/function
+      USE_MODEL_CONTROLLER: 'False'
+      batching: 'true'
+      batchsize: '16'
+      exec_timeout: '300'
+      read_timeout: '300'
+      threadiness: '4'
+      write_debug: true
+      write_timeout: '300'
+    handler: ./distilbert
+    hostIPC: true
+    image: blinkbear/smiless-distilbert:latest
+    lang: python3-debian-gpu
+    limits:
+      cpu: '2'
+      memory: 4Gi
+    namespace: openfaas-fn
+    requests:
+      cpu: '2'
+      memory: 4Gi
+  facerecognition:
+    environment:
+      BACKEND: cpu
+      BACKEND_PORT: '34242'
+      BASIC_URL: http://127.0.0.1:31112/function
+      USE_MODEL_CONTROLLER: 'False'
+      batching: 'true'
+      batchsize: '16'
+      exec_timeout: '300'
+      local: 'true'
+      read_timeout: '300'
+      threadiness: '4'
+      write_debug: true
+      write_timeout: '300'
+    handler: ./facerecognition
+    image: blinkbear/smiless-facerecognition:latest
+    lang: python3-debian-gpu-facetorch
+    limits:
+      cpu: '2'
+      memory: 4Gi
+    namespace: openfaas-fn
+    requests:
+      cpu: '2'
+      memory: 4Gi
+  humanactivitypose:
+    environment:
+      BACKEND: cpu
+      BACKEND_PORT: '34242'
+      BASIC_URL: http://127.0.0.1:31112/function
+      USE_MODEL_CONTROLLER: 'False'
+      batching: 'true'
+      batchsize: '16'
+      exec_timeout: '300'
+      local: 'true'
+      read_timeout: '300'
+      threadiness: '4'
+      write_debug: true
+      write_timeout: '300'
+    handler: ./humanactivitypose
+    image: blinkbear/smiless-humanactivitypose:latest
+    lang: python3-debian-gpu-vision
+    limits:
+      cpu: '2'
+      memory: 4Gi
+    namespace: openfaas-fn
+    requests:
+      cpu: '2'
+      memory: 4Gi
+  imagerecognition:
+    environment:
+      BACKEND: cpu
+      BACKEND_PORT: '34242'
+      BASIC_URL: http://127.0.0.1:31112/function
+      USE_MODEL_CONTROLLER: 'False'
+      exec_timeout: '300'
+      local: 'true'
+      read_timeout: '300'
+      write_debug: true
+      write_timeout: '300'
+    handler: ./imagerecognition
+    image: blinkbear/smiless-imagerecognition:latest
+    lang: python3-debian-gpu
+    limits:
+      cpu: '2'
+      memory: 4Gi
+    namespace: openfaas-fn
+    requests:
+      cpu: '2'
+      memory: 4Gi
+  nameentityrecognition:
+    environment:
+      BACKEND: cpu
+      BACKEND_PORT: '34242'
+      BASIC_URL: http://127.0.0.1:31112/function
+      USE_MODEL_CONTROLLER: 'False'
+      batching: 'true'
+      batchsize: '16'
+      exec_timeout: '300'
+      local: 'true'
+      read_timeout: '300'
+      threadiness: '4'
+      write_debug: true
+      write_timeout: '300'
+    handler: ./nameentityrecognition
+    image: blinkbear/smiless-nameentityrecognition:latest
+    lang: python3-debian-gpu
+    limits:
+      cpu: '2'
+      memory: 4Gi
+    namespace: openfaas-fn
+    requests:
+      cpu: '2'
+      memory: 4Gi
+  objectdetection:
+    environment:
+      BACKEND: cpu
+      BACKEND_PORT: '34242'
+      BASIC_URL: http://127.0.0.1:31112/function
+      USE_MODEL_CONTROLLER: 'False'
+      batching: 'true'
+      batchsize: '16'
+      exec_timeout: '300'
+      local: 'true'
+      read_timeout: '300'
+      threadiness: '4'
+      write_debug: true
+      write_timeout: '300'
+    handler: ./objectdetection
+    image: blinkbear/smiless-objectdetection:latest
+    lang: python3-debian-gpu-vision
+    limits:
+      cpu: '2'
+      memory: 4Gi
+    namespace: openfaas-fn
+    requests:
+      cpu: '2'
+      memory: 4Gi
+  questionanswering:
+    environment:
+      BACKEND: cuda
+      BACKEND_PORT: '34242'
+      BASIC_URL: http://127.0.0.1:31112/function
+      USE_MODEL_CONTROLLER: 'False'
+      batch_wait_timeout: '50'
+      batching: 'true'
+      batchsize: '16'
+      exec_timeout: '300'
+      local: 'true'
+      read_timeout: '300'
+      threadiness: '4'
+      write_debug: true
+      write_timeout: '300'
+    handler: ./questionanswering
+    image: blinkbear/smiless-questionanswering:latest
+    lang: python3-debian-gpu
+    limits:
+      cpu: '2'
+      memory: 4Gi
+    namespace: openfaas-fn
+    requests:
+      cpu: '2'
+      memory: 4Gi
+  speechrecognition:
+    environment:
+      BACKEND: cpu
+      BACKEND_PORT: '34242'
+      BASIC_URL: http://127.0.0.1:31112/function
+      USE_MODEL_CONTROLLER: 'False'
+      batching: 'true'
+      batchsize: '16'
+      exec_timeout: '300'
+      local: 'true'
+      read_timeout: '300'
+      threadiness: '4'
+      write_debug: true
+      write_timeout: '300'
+    handler: ./speechrecognition
+    image: blinkbear/smiless-speechrecognition:latest
+    lang: python3-debian-gpu-speech
+    limits:
+      cpu: '2'
+      memory: 4Gi
+    namespace: openfaas-fn
+    requests:
+      cpu: '2'
+      memory: 4Gi
+  textgeneration:
+    environment:
+      BACKEND: cpu
+      BACKEND_PORT: '34242'
+      BASIC_URL: http://127.0.0.1:31112/function
+      USE_MODEL_CONTROLLER: 'False'
+      batching: 'true'
+      batchsize: '16'
+      exec_timeout: '300'
+      read_timeout: '300'
+      threadiness: '4'
+      write_debug: true
+      write_timeout: '300'
+    handler: ./textgeneration
+    image: blinkbear/smiless-textgeneration:latest
+    lang: python3-debian-gpu
+    limits:
+      cpu: '2'
+      memory: 4Gi
+    namespace: openfaas-fn
+    requests:
+      cpu: '2'
+      memory: 4Gi
+  texttospeech:
+    environment:
+      BACKEND: cpu
+      BACKEND_PORT: '34242'
+      BASIC_URL: http://127.0.0.1:31112/function
+      USE_MODEL_CONTROLLER: 'False'
+      batching: 'true'
+      batchsize: '16'
+      exec_timeout: '300'
+      local: 'true'
+      read_timeout: '300'
+      threadiness: '4'
+      write_debug: true
+      write_timeout: '300'
+    handler: ./texttospeech
+    image: blinkbear/smiless-texttospeech:latest
+    lang: python3-debian-gpu-speech
+    limits:
+      cpu: '2'
+      memory: 4Gi
+    namespace: openfaas-fn
+    requests:
+      cpu: '2'
+      memory: 4Gi
+  topicmodeling:
+    environment:
+      BACKEND: cpu
+      BACKEND_PORT: '34242'
+      BASIC_URL: http://127.0.0.1:31112/function
+      USE_MODEL_CONTROLLER: 'False'
+      batching: 'true'
+      batchsize: '16'
+      exec_timeout: '300'
+      local: 'true'
+      read_timeout: '300'
+      threadiness: '4'
+      write_debug: true
+      write_timeout: '300'
+    handler: ./topicmodeling
+    image: blinkbear/smiless-topicmodeling:latest
+    lang: python3-debian-gpu
+    limits:
+      cpu: '2'
+      memory: 4Gi
+    namespace: openfaas-fn
+    requests:
+      cpu: '2'
+      memory: 4Gi
+  translation:
+    environment:
+      BACKEND: cpu
+      BACKEND_PORT: '34242'
+      BASIC_URL: http://127.0.0.1:31112/function
+      USE_MODEL_CONTROLLER: 'False'
+      batching: 'true'
+      batchsize: '16'
+      exec_timeout: '300'
+      read_timeout: '300'
+      threadiness: '4'
+      write_debug: true
+      write_timeout: '300'
+    handler: ./translation
+    image: blinkbear/smiless-translation:latest
+    lang: python3-debian-gpu
+    limits:
+      cpu: '2'
+      memory: 4Gi
+    namespace: openfaas-fn
+    requests:
+      cpu: '2'
+      memory: 4Gi
+provider:
+  gateway: 127.0.0.1
+  name: openfaas
+version: 1.0

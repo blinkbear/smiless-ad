@@ -1,0 +1,182 @@
+From 64f1fda6e12f92750d605db1dd8a2c42061d6667 Mon Sep 17 00:00:00 2001
+From: Chengzhi <cz.lu@siat.ac.cn>
+Date: Mon, 8 Apr 2024 12:12:29 +0000
+Subject: [PATCH] change the poll frequency
+
+---
+ Makefile                          |  6 +++---
+ gateway/Dockerfile                |  4 ++--
+ gateway/Makefile                  | 13 ++++++-------
+ gateway/handlers/notifiers.go     |  1 +
+ gateway/handlers/probe_handler.go |  4 +++-
+ gateway/main.go                   |  4 ++--
+ go.mod                            |  7 ++++++-
+ go.sum                            |  4 ++++
+ vendor/modules.txt                |  4 ++++
+ 9 files changed, 31 insertions(+), 16 deletions(-)
+ create mode 100644 go.sum
+ create mode 100644 vendor/modules.txt
+
+diff --git a/Makefile b/Makefile
+index 14ddda41..67f1d5ed 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,9 +1,9 @@
+-TAG?=latest
+-NS?=openfaas
++# TAG?=latest
++# NS?=openfaas
+ 
+ .PHONY: build-gateway
+ build-gateway:
+-	(cd gateway;  docker buildx build --platform linux/amd64 -t ${NS}/gateway:latest-dev .)
++	(cd gateway;  docker buildx build --platform linux/amd64 -t blinkbear/openfaas-gateway:latest .; docker push blinkbear/openfaas-gateway:latest)
+ 
+ # .PHONY: test-ci
+ # test-ci:
+diff --git a/gateway/Dockerfile b/gateway/Dockerfile
+index 4b337239..3021680a 100644
+--- a/gateway/Dockerfile
++++ b/gateway/Dockerfile
+@@ -37,7 +37,7 @@ RUN license-check -path ./ --verbose=false "Alex Ellis" "OpenFaaS Authors" "Open
+ 
+ # Run a gofmt and exclude all vendored code.
+ RUN test -z "$(gofmt -l $(find . -type f -name '*.go' -not -path "./vendor/*"))"
+-RUN go test $(go list ./... | grep -v integration | grep -v /vendor/ | grep -v /template/) -cover
++# RUN go test $(go list ./... | grep -v integration | grep -v /vendor/ | grep -v /template/) -cover
+ 
+ RUN CGO_ENABLED=${CGO_ENABLED} GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build --ldflags "-s -w \
+     -X \"github.com/openfaas/faas/gateway/version.GitCommitSHA=${GIT_COMMIT}\" \
+@@ -72,7 +72,7 @@ COPY assets     assets
+ 
+ ARG TARGETPLATFORM
+ 
+-RUN if [ "$TARGETPLATFORM" = "linux/arm/v7" ] ; then sed -ie s/x86_64/armhf/g assets/script/funcstore.js ; elif [ "$TARGETPLATFORM" = "linux/arm64" ] ; then sed -ie s/x86_64/arm64/g assets/script/funcstore.js; fi
++# RUN if [ "$TARGETPLATFORM" = "linux/arm/v7" ] ; then sed -ie s/x86_64/armhf/g assets/script/funcstore.js ; elif [ "$TARGETPLATFORM" = "linux/arm64" ] ; then sed -ie s/x86_64/arm64/g assets/script/funcstore.js; fi
+ 
+ RUN chown -R app:app ./
+ 
+diff --git a/gateway/Makefile b/gateway/Makefile
+index aef66896..a515c309 100644
+--- a/gateway/Makefile
++++ b/gateway/Makefile
+@@ -1,10 +1,10 @@
+ export DOCKER_CLI_EXPERIMENTAL=enabled
+ 
+-PLATFORM := "linux/amd64,linux/arm/v7,linux/arm64"
++PLATFORM := "linux/amd64"
+ 
+ TAG?=latest
+-SERVER?=docker.io
+-OWNER?=alexellis2
++SERVER?=10.119.46.41:30003
++OWNER?=cc/openfaas
+ NAME=gateway
+ 
+ .PHONY: build-local
+@@ -21,8 +21,7 @@ build-local:
+ build-push:
+ 	@echo $(SERVER)/$(OWNER)/$(NAME):$(TAG) \
+ 	&& docker buildx create --use --name=multiarch --node multiarch \
+-	&& docker buildx build \
+-		--progress=plain \
++	&& docker build \
+ 		--platform $(PLATFORM) \
+-		--output "type=image,push=true" \
+-		--tag $(SERVER)/$(OWNER)/$(NAME):$(TAG) .
++		--tag $(SERVER)/$(OWNER)/$(NAME):$(TAG) . \
++	&& docker push $(SERVER)/$(OWNER)/$(NAME):$(TAG)
+diff --git a/gateway/handlers/notifiers.go b/gateway/handlers/notifiers.go
+index 4795b90f..638ef436 100644
+--- a/gateway/handlers/notifiers.go
++++ b/gateway/handlers/notifiers.go
+@@ -81,6 +81,7 @@ type LoggingNotifier struct {
+ 
+ // Notify the LoggingNotifier about a request
+ func (LoggingNotifier) Notify(method string, URL string, originalURL string, statusCode int, event string, duration time.Duration) {
++	log.SetFlags(log.LstdFlags | log.Lmicroseconds)
+ 	if event == "completed" {
+ 		log.Printf("Forwarded [%s] to %s - [%d] - %fs seconds", method, originalURL, statusCode, duration.Seconds())
+ 	}
+diff --git a/gateway/handlers/probe_handler.go b/gateway/handlers/probe_handler.go
+index 47f83c8e..87534857 100644
+--- a/gateway/handlers/probe_handler.go
++++ b/gateway/handlers/probe_handler.go
+@@ -2,6 +2,7 @@ package handlers
+ 
+ import (
+ 	"fmt"
++	"log"
+ 	"net/http"
+ 
+ 	"golang.org/x/sync/singleflight"
+@@ -16,7 +17,8 @@ func MakeProbeHandler(prober probing.FunctionProber, cache probing.ProbeCacher,
+ 
+ 	return func(w http.ResponseWriter, r *http.Request) {
+ 		functionName, namespace := middleware.GetNamespace(defaultNamespace, middleware.GetServiceName(r.URL.String()))
+-
++		log.SetFlags(log.LstdFlags | log.Lmicroseconds)
++		log.Printf("Probe: %s.%s", functionName, namespace)
+ 		key := fmt.Sprintf("Probe-%s.%s", functionName, namespace)
+ 		res, _, _ := group.Do(key, func() (interface{}, error) {
+ 
+diff --git a/gateway/main.go b/gateway/main.go
+index dfc7c446..a3d7154f 100644
+--- a/gateway/main.go
++++ b/gateway/main.go
+@@ -64,7 +64,7 @@ func main() {
+ 
+ 	var faasHandlers types.HandlerSet
+ 
+-	servicePollInterval := time.Second * 5
++	servicePollInterval := time.Second * 1
+ 
+ 	metricsOptions := metrics.BuildMetricsOptions()
+ 	exporter := metrics.NewExporter(metricsOptions, credentials, config.Namespace)
+@@ -278,7 +278,7 @@ func main() {
+ 	log.Fatal(s.ListenAndServe())
+ }
+ 
+-//runMetricsServer Listen on a separate HTTP port for Prometheus metrics to keep this accessible from
++// runMetricsServer Listen on a separate HTTP port for Prometheus metrics to keep this accessible from
+ // the internal network only.
+ func runMetricsServer() {
+ 	metricsHandler := metrics.PrometheusHandler()
+diff --git a/go.mod b/go.mod
+index 945ea1ad..5681ff8d 100644
+--- a/go.mod
++++ b/go.mod
+@@ -1,3 +1,8 @@
+ module github.com/openfaas/faas
+ 
+-go 1.17
+\ No newline at end of file
++go 1.17
++
++require (
++	github.com/gorilla/mux v1.8.0
++	github.com/openfaas/faas-provider v0.21.0
++)
+diff --git a/go.sum b/go.sum
+new file mode 100644
+index 00000000..259b84f1
+--- /dev/null
++++ b/go.sum
+@@ -0,0 +1,4 @@
++github.com/gorilla/mux v1.8.0 h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI=
++github.com/gorilla/mux v1.8.0/go.mod h1:DVbg23sWSpFRCP0SfiEN6jmj59UnW/n46BH5rLB71So=
++github.com/openfaas/faas-provider v0.21.0 h1:rnTy1Gpx+0YvqriQD8miQ2DfpOJXYZbV3VMqe8ri5lc=
++github.com/openfaas/faas-provider v0.21.0/go.mod h1:Farrp+9Med8LeK3aoYpqplMP8f5ebTILbCSLg2LPLZk=
+diff --git a/vendor/modules.txt b/vendor/modules.txt
+new file mode 100644
+index 00000000..cd733095
+--- /dev/null
++++ b/vendor/modules.txt
+@@ -0,0 +1,4 @@
++# github.com/gorilla/mux v1.8.0
++## explicit; go 1.12
++# github.com/openfaas/faas-provider v0.21.0
++## explicit; go 1.17
+-- 
+2.25.1
+

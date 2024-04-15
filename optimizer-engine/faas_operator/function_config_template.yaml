@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: template
+  namespace: openfaas-fn
+data:
+  'cold_start': 'False'
+  'depth': "{'openfaas-workflow-configmap-demo': 0}"
+  'prewarm_time': '0.0'
+  'resource_type': 'cpu'
+  'knee_point': '1'
+  'sharing': 'False'
+  'target_replicas': '1'
