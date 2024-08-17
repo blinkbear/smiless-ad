@@ -306,7 +306,7 @@ if __name__ == "__main__":
     kube_operator = KubeOperator(v1, namespace)
     invocation_infos = InvocationInfos()
     online_predictor = OnlinePredictor(prom_operator, invocation_infos)
-    function_profiler = FunctionProfiler(kube_operator, online_predictor)
+    function_profiler = FunctionProfiler(kube_operator, online_predictor, prom_operator)
     cache = Cache(function_profiler)
     auto_scaler = AutoScaler(function_profiler)
     optimizer_factory = OptimizerFactory()

@@ -82,8 +82,7 @@ class PathSearch:
         device_sorted = np.where(
             self.df.cpu_execution_cost.values < self.df.gpu_execution_cost.values, 0, 1
         )
-
-        additional_time = np.abs(
+        additional_time = (
             self.df.cpu_running_time.values - self.df.gpu_running_time.values
         )
         self.df["device_sorted"] = device_sorted
@@ -120,12 +119,12 @@ class PathSearch:
         devices = ("cpu", "cuda")
         open_list = PriorityQueue()
         open_list.put(PrioritizedItem(0, (0, current_running_time)))
-        selected_devices = np.full(len(curr_df), "", dtype="U")
+        selected_devices = [""] * len(curr_df)
         # while there are still nodes in the open list
         while not open_list.empty():
             # get the node with the lowest cost
             current_index, current_running_time = open_list.get().item
-            if current_index == len(curr_df) - 1:
+            if current_index == len(curr_df) :
                 curr_df["device"] = selected_devices
                 self.available_solution = curr_df
                 return
@@ -134,18 +133,18 @@ class PathSearch:
                 devices[int(curr_df.at[current_index, "device_sorted"]) ^ 1],
             )
             for i in range(len(device)):
+                selected_devices[current_index] = device[i]
                 if curr_df.at[current_index, "device"] != device[i]:
-                    # curr_df.at[current_index, "device"] = device[i]
-                    selected_devices[current_index] = device[i]
-                    open_list.put(
-                        PrioritizedItem(
-                            current_running_time > SLA,
-                            (
-                                current_index + 1,
-                                current_running_time
-                                - curr_df.at[current_index, "additional_time"],
-                            ),
-                        )
+                    current_running_time -= curr_df.at[current_index, "additional_time"]
+                else:
+                    current_running_time = current_running_time
+
+                current_running_time -= curr_df.loc[current_index+1:, "additional_time"].sum()
+                open_list.put(
+                    PrioritizedItem(
+                        current_running_time,
+                        (current_index + 1, current_running_time),
                     )
+                )
 
         return

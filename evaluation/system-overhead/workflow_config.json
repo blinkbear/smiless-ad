@@ -14,7 +14,16 @@
                 "facerecognition",
                 "nameentityrecognition",
                 "objectdetection",
-                "imagerecognition"
+                "imagerecognition",
+                "speechrecognition-1",
+                "topicmodeling-1",
+                "textgeneration-1",
+                "distilbert-1",
+                "questionanswering-1",
+                "translation-1",
+                "texttospeech-1",
+                "humanactivitypose-1",
+                "facerecognition-1"
             ],
             "entryPoint": "speechrecognition",
             "edges": [
@@ -71,6 +80,51 @@
                 {
                     "source": "objectdetection",
                     "target": "imagerecognition",
+                    "weight": 1
+                },
+                {
+                    "source": "imagerecognition",
+                    "target": "speechrecognition-1",
+                    "weight": 1
+                },
+                {
+                    "source": "speechrecognition-1",
+                    "target": "topicmodeling-1",
+                    "weight": 1
+                },
+                {
+                    "source": "topicmodeling-1",
+                    "target": "textgeneration-1",
+                    "weight": 1
+                },
+                {
+                    "source": "textgeneration-1",
+                    "target": "distilbert-1",
+                    "weight": 1
+                },
+                {
+                    "source": "distilbert-1",
+                    "target": "questionanswering-1",
+                    "weight": 1
+                },
+                {
+                    "source": "questionanswering-1",
+                    "target": "translation-1",
+                    "weight": 1
+                },
+                {
+                    "source": "translation-1",
+                    "target": "texttospeech-1",
+                    "weight": 1
+                },
+                {
+                    "source": "texttospeech-1",
+                    "target": "humanactivitypose-1",
+                    "weight": 1
+                },
+                {
+                    "source": "humanactivitypose-1",
+                    "target": "facerecognition-1",
                     "weight": 1
                 }
             ]

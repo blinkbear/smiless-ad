@@ -87,7 +87,6 @@ class OnlinePredictor:
         (
             self.inter_arrival_time_models,
             self.inter_arrival_time_n_ins,
-            self.inter_arrival_time_n_outs,
             self.inter_arrival_time_intervals,
         ) = self.__load_files_from_dir(
             os.path.join(SCRIPT_DIR, "inter_arrival_time_model"),
@@ -96,7 +95,6 @@ class OnlinePredictor:
         (
             self.invocation_number_models,
             self.invocation_number_n_ins,
-            self.invocation_number_n_outs,
             self.invocation_number_intervals,
         ) = self.__load_files_from_dir(
             os.path.join(SCRIPT_DIR, "invocation_number_model"),
@@ -105,16 +103,15 @@ class OnlinePredictor:
         (
             self.bursty_invocation_number_models,
             self.bursty_invocation_number_n_ins,
-            self.bursty_invocation_number_n_outs,
             self.bursty_invocation_number_intervals,
         ) = self.__load_files_from_dir(
             os.path.join(SCRIPT_DIR, "bursty_invocation_number_model"),
+            model_type="invocation_number",
         )
 
     def __load_files_from_dir(self, directory, model_type):
         models = {}
         n_ins = {}
-        n_outs = {}
         intervals = {}
         for filename in os.listdir(directory):
             if os.path.isfile(os.path.join(directory, filename)):
@@ -123,18 +120,15 @@ class OnlinePredictor:
                     function_name = filenames[0].split("-")[0]
                     n_in = int(filenames[0].split("-")[1])
                     if model_type == "inter_arrival_time":
-                        n_out = int(filenames[0].split("-")[2])
                         interval = 1
                     elif model_type == "invocation_number":
-                        n_out = 1
                         interval = int(filenames[0].split("-")[2])
                     models[function_name] = torch.load(
                         os.path.join(directory, filename)
                     )
                     n_ins[function_name] = n_in
-                    n_outs[function_name] = n_out
                     interval[function_name] = interval
-        return models, n_ins, n_outs, intervals
+        return models, n_ins,  intervals
 
     def min_max_scaler(self, inter_arrival_time, invocation_number):
         from sklearn.preprocessing import MinMaxScaler

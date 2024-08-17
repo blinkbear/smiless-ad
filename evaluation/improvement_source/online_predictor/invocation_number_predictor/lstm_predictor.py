@@ -111,18 +111,19 @@ import torch.optim as optim
 import torch.utils.data as datautil
 
 
-class AirModel(nn.Module):
+class InvocationNumberModel(nn.Module):
     def __init__(self, n_in, n_out):
-        super(AirModel, self).__init__()
+        super(InvocationNumberModel, self).__init__()
         self.lstm = nn.LSTM(
-            input_size=n_in, hidden_size=n_in, num_layers=1, batch_first=True
+            input_size=n_in, hidden_size=30, num_layers=1, batch_first=True
         )
-        self.linear = nn.Linear(n_in, n_out, bias=False)
+        self.linear = nn.Linear(30, 1)
 
     def forward(self, x):
         x, _ = self.lstm(x)
         out = self.linear(x)
         return out
+
 
 
 def create_dataset(input_time_series, n_in=1, n_out=1, return_tensor=True):
@@ -160,7 +161,7 @@ def train_model(
     n_in, n_out, learning_rate, train_x, train_y, device, model_type="LSTM"
 ):
     if model_type == "LSTM":
-        model = AirModel(n_in, n_out)
+        model = InvocationNumberModel(n_in, n_out)
         model = model.to(device)
         optimizer = optim.Adam(model.parameters(), lr=learning_rate)
         loss_fn = nn.L1Loss()
@@ -182,17 +183,14 @@ def train_model(
                 optimizer.step()
                 val_loss.append(loss.item())
 
-            # 计算平均验证集损失
             avg_val_loss = np.mean(val_loss)
 
-            # 判断是否早期停止
             if avg_val_loss < best_val_loss:
                 best_val_loss = avg_val_loss
                 early_stopping_counter = 0
             else:
                 early_stopping_counter += 1
 
-            # 判断是否触发早期停止
             if early_stopping_counter >= patience:
                 break
 

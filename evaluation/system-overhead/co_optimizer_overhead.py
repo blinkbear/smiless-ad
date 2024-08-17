@@ -15,7 +15,7 @@ def get_co_optimization_overhead():
     dag_parser = DAGParser()
     smiless_optimizer = OptimizerFactory().get_optimizer()
     workflow_lengths = [i for i in range(3, 11)]
-    SLAs = [i for i in range(2, 10)]
+    SLAs = [i for i in range(2,10)]
     durations = []
     for workflow_length in workflow_lengths:
         max_duration = 0
@@ -27,20 +27,18 @@ def get_co_optimization_overhead():
             graph_df, graph_dfs, entry_node = dag_parser.parse_graph_to_df(
                 workflow_name
             )
-            _, _, execution_time = smiless_optimizer.get_workflow_running_plan_df(
+            result_df, _, execution_time = smiless_optimizer.get_workflow_running_plan_df(
                 workflow_name,
                 graph_df,
                 graph_dfs,
                 SLA,
             )
-            
             if execution_time > max_duration:
                 max_duration = execution_time
 
         durations.append(max_duration)
     result = pd.DataFrame({"workflow_length": workflow_lengths, "duration": durations})
-    print(result)
-    # result.to_csv(os.path.join(BASE_DIR, "data", "co_optimizer_overhead.csv"))
+    result.to_csv(os.path.join(BASE_DIR, "data", "co_optimizer_overhead.csv"))
 
 
 get_co_optimization_overhead()

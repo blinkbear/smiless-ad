@@ -13,6 +13,49 @@ warnings.filterwarnings("ignore")
 SOURCE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+class InterArrivalTimeModel(nn.Module):
+    def __init__(self, n_in, n_out):
+        super(InterArrivalTimeModel, self).__init__()
+        self.lstm1 = nn.LSTM(
+            input_size=n_in, hidden_size=128, num_layers=1, batch_first=True
+        )
+        self.lstm2 = nn.LSTM(
+            input_size=n_in, hidden_size=128, num_layers=1, batch_first=True
+        )
+        self.tanh = nn.Tanh()
+        self.linear1 = nn.Linear(128, 128, bias=False)
+        self.linear2 = nn.Linear(128, n_out, bias=False)
+
+    def forward(self, x):
+        x1 = x[:, :, 0]
+        x2 = x[:, :, 1]
+        x1, _ = self.lstm1(x1)
+        x2, _ = self.lstm2(x2)
+        x2 = x1 + x2
+        x2 = self.linear1(x2)
+        x2 = self.linear2(x2)
+        out = self.tanh(x2)
+
+        return out
+
+
+class InterArrivalTimeModelOriginal(nn.Module):
+    def __init__(self, n_in, n_out):
+        super(InterArrivalTimeModelOriginal, self).__init__()
+        self.lstm1 = nn.LSTM(
+            input_size=n_in, hidden_size=n_in, num_layers=1, batch_first=True
+        )
+        self.lstm2 = nn.LSTM(
+            input_size=n_in, hidden_size=n_in, num_layers=1, batch_first=True
+        )
+        self.linear = nn.Linear(n_in, n_out, bias=False)
+
+    def forward(self, x):
+        x1, _ = self.lstm1(x)
+        x2, _ = self.lstm2(x[-1:])
+        out = self.linear(x1 + x2)
+        return out
+
 def get_input_data(func, datapath, all_function=False):
     data = pd.read_csv(datapath)
     # change the column to row
@@ -127,48 +170,6 @@ def calculate_error(actual, predicted, error_type, interval=1) -> float:
     return percentage
 
 
-class AirModel(nn.Module):
-    def __init__(self, n_in, n_out):
-        super(AirModel, self).__init__()
-        self.lstm1 = nn.LSTM(
-            input_size=n_in, hidden_size=128, num_layers=1, batch_first=True
-        )
-        self.lstm2 = nn.LSTM(
-            input_size=n_in, hidden_size=128, num_layers=1, batch_first=True
-        )
-        self.tanh = nn.Tanh()
-        self.linear1 = nn.Linear(128, 128, bias=False)
-        self.linear2 = nn.Linear(128, n_out, bias=False)
-
-    def forward(self, x):
-        x1 = x[:, :, 0]
-        x2 = x[:, :, 1]
-        x1, _ = self.lstm1(x1)
-        x2, _ = self.lstm2(x2)
-        x2 = x1 + x2
-        x2 = self.linear1(x2)
-        x2 = self.linear2(x2)
-        out = self.tanh(x2)
-
-        return out
-
-
-class AirModelOriginal(nn.Module):
-    def __init__(self, n_in, n_out):
-        super(AirModelOriginal, self).__init__()
-        self.lstm1 = nn.LSTM(
-            input_size=n_in, hidden_size=n_in, num_layers=1, batch_first=True
-        )
-        self.lstm2 = nn.LSTM(
-            input_size=n_in, hidden_size=n_in, num_layers=1, batch_first=True
-        )
-        self.linear = nn.Linear(n_in, n_out, bias=False)
-
-    def forward(self, x):
-        x1, _ = self.lstm1(x)
-        x2, _ = self.lstm2(x[-1:])
-        out = self.linear(x1 + x2)
-        return out
 
 
 def create_dataset(input_time_series, n_in=1, n_out=1, return_tensor=True):
@@ -206,9 +207,9 @@ def get_learning_rate(data):
 
 def train_model(n_in, n_out, learning_rate, train_x, train_y, device):
     if input_type == "single":
-        model = AirModelOriginal(n_in, n_out)
+        model = InterArrivalTimeModelOriginal(n_in, n_out)
     elif input_type == "multi":
-        model = AirModel(n_in, n_out)
+        model = InterArrivalTimeModel(n_in, n_out)
     model = model.to(device)
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
     loss_fn = nn.L1Loss()
@@ -230,17 +231,14 @@ def train_model(n_in, n_out, learning_rate, train_x, train_y, device):
             optimizer.step()
             val_loss.append(loss.item())
 
-        # 计算平均验证集损失
         avg_val_loss = np.mean(val_loss)
         losses.append(avg_val_loss)
-        # 判断是否早期停止
         if avg_val_loss < best_val_loss:
             best_val_loss = avg_val_loss
             early_stopping_counter = 0
         else:
             early_stopping_counter += 1
 
-        # 判断是否触发早期停止
         if early_stopping_counter >= patience:
             break
 

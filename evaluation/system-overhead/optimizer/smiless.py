@@ -66,10 +66,10 @@ class SMIless(Optimizer):
         """
         # Get list of nodes in the call graph
         updated = workflow_name in self.workflow_strategy
-        IT = 10
-        self.interval_time_unit = 10
+        IT = 2
+        self.interval_time_unit = 2
         self.workflow_strategy[workflow_name] = (graph_df, graph_dfs)
-        self.IT = IT
+        self.IT = IT*self.interval_time_unit
 
         nodes = graph_df["node"].tolist()
         if IT == 0 and updated:

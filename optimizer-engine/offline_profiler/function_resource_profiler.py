@@ -6,9 +6,9 @@ import os
 import numpy as np
 import json
 from offline_profiler.util import Util
-from ..utils.kube_operator import KubeOperator
-from ..online_predictor.online_predictor import OnlinePredictor
-from ..utils.prom_operator import PrometheusOperator
+from utils.kube_operator import KubeOperator
+from online_predictor.online_predictor import OnlinePredictor
+from utils.prom_operator import PrometheusOperator
 import time
 from scipy.optimize import curve_fit
 from concurrent.futures import ThreadPoolExecutor
@@ -32,7 +32,7 @@ class FunctionProfiler:
         self.kube_op = kube_op
         self.online_predictor = online_predictor
 
-        self.function_info_updator = FunctionInfoUpdator(prom_op)
+        self.function_info_updator = FunctionInfoUpdator( kube_op, prom_op)
         self.cpu_running_time_profilers, self.gpu_running_time_profilers = (
             self.function_info_updator.get_execution_profilers()
         )
@@ -111,8 +111,6 @@ class FunctionProfiler:
 
         def get_interval(row):
             import itertools
-            import pandas as pd
-
             function_name = row.to_list()[0]
             row = row.to_list()[1:]
             count_row = [len(list(v)) for k, v in itertools.groupby(row) if k == 0]
@@ -261,9 +259,11 @@ class FunctionProfiler:
 class FunctionInfoUpdator:
     def __init__(
         self,
+        kube_op: KubeOperator,
         prometheus_operater: PrometheusOperator,
     ):
         self.prometheus_operator = prometheus_operater
+        self.kube_op = kube_op
         self.set_profilers()
         with ThreadPoolExecutor(max_workers=32) as executor:
             executor.submit(self.update_function_infos)
