@@ -55,6 +55,11 @@ class OptimizerFactory:
         from .smiless_homo import SMIlessHomo
         from .smiless_no_dag import SMIlessNoDag
         from .smiless_opt import SMIlessOPT
+        from .smiless import SMIlessAzure
+        from .smiless import SMIlessBFS
+        from .smiless import SMIlessDFS
+        from .smiless import SMIlessAstar
+        from .smiless import SMIlessAug
 
         if name == "orion":
             if "orion" not in self.factories:
@@ -101,3 +106,28 @@ class OptimizerFactory:
                 smiless_opt = SMIlessOPT(cache, function_profiler, online_predictor)
                 self.factories["smiless-opt"] = smiless_opt
             return self.factories["smiless-opt"]
+        if name == "smiless-azure":
+            self.factories["smiless-azure"] = SMIlessAzure(
+                cache, function_profiler, online_predictor
+            )
+            return self.factories["smiless-azure"]
+        if name == "smiless-bfs":
+            self.factories["smiless-bfs"] = SMIlessBFS(
+                cache, function_profiler, online_predictor
+            )
+            return self.factories["smiless-bfs"]
+        if name == "smiless-dfs":
+            self.factories["smiless-dfs"] = SMIlessDFS(
+                cache, function_profiler, online_predictor
+            )
+            return self.factories["smiless-dfs"]
+        if name == "smiless-astar":
+            self.factories["smiless-astar"] = SMIlessAstar(
+                cache, function_profiler, online_predictor
+            )
+            return self.factories["smiless-astar"]
+        if name == "smiless-aug":
+            self.factories["smiless-aug"] = SMIlessAug(
+                cache, function_profiler, online_predictor
+            )
+            return self.factories["smiless-aug"]

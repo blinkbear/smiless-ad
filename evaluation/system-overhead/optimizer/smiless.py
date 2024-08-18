@@ -46,6 +46,12 @@ class SMIless(Optimizer):
         )
         return graph_df, nodes
 
+    def _get_running_plan(self, df, shared_nodes, SLA):
+        self.path_search.init(df, shared_nodes, SLA, self.IT)
+        # Get the running plan DataFrame using the A* search algorithm
+        df = self.path_search.get_running_plan_df()
+        return df
+    
     def get_workflow_running_plan_df(
         self,
         workflow_name,
@@ -88,7 +94,7 @@ class SMIless(Optimizer):
             self.path_search.init(df, shared_nodes, SLA, self.IT)
             # Get the running plan DataFrame using the A* search algorithm
             st = time.time()
-            self.path_search.get_running_plan_df()
+            df = self._get_running_plan(df, shared_nodes, SLA)
             et = time.time()
             df = self.path_search.available_solution
             if df is None:
@@ -129,4 +135,52 @@ class SMIless(Optimizer):
 
         df["keep_alive_time"] = df.apply(lambda x: __get_keep_alive_time(x), axis=1)
         df["keep_alive_resource"] = df["resource_quantity"]
+        return df
+
+
+class SMIlessDFS(SMIless):
+    def __init__(
+        self,
+    ):
+        super().__init__()
+
+    def _get_running_plan(self, df, shared_nodes, SLA):
+        self.path_search.init(df, shared_nodes, SLA, self.IT)
+        df = self.path_search.get_running_plan_df(search_method="dfs")
+        return df
+
+
+class SMIlessBFS(SMIless):
+    def __init__(
+        self,
+    ):
+        super().__init__()
+
+    def _get_running_plan(self, df, shared_nodes, SLA):
+        self.path_search.init(df, shared_nodes, SLA, self.IT)
+        df = self.path_search.get_running_plan_df(search_method="bfs")
+        return df
+
+
+class SMIlessAstar(SMIless):
+    def __init__(
+        self,
+    ):
+        super().__init__()
+
+    def _get_running_plan(self, df, shared_nodes, SLA):
+        self.path_search.init(df, shared_nodes, SLA, self.IT)
+        df = self.path_search.get_running_plan_df(search_method="Astar")
+        return df
+
+
+class SMIlessAug(SMIless):
+    def __init__(
+        self,
+    ):
+        super().__init__()
+
+    def _get_running_plan(self, df, shared_nodes, SLA):
+        self.path_search.init(df, shared_nodes, SLA, self.IT)
+        df = self.path_search.get_running_plan_df(search_method="aug_smiless")
         return df

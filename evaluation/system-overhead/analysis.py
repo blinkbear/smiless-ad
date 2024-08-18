@@ -42,18 +42,30 @@ def plot_invocation_number_latency():
 def plot_scalability():
     plt.figure(figsize=(3, 2), dpi=120)
     sns.set_palette("deep")
-    df = pd.read_csv(os.path.join(BASE_DIR, "data", "smiless_scalability_result.csv"))
-    ax = sns.lineplot(data=df, x="workflow_length", y="time")
+    df = pd.read_csv(os.path.join(BASE_DIR, "data", "co_optimizer_overhead.csv"))
+    df['optimizer_names']=df['optimizer_names'].apply(lambda row: "SMIless" if len(row.split("-"))==1 else row.split("-")[1].upper())
+    df['optimizer_names']=df['optimizer_names'].apply(lambda row: r"$A^\bigstar$" if row=='ASTAR' else row)
+
+    
+    ax = sns.lineplot(data=df,hue='optimizer_names', x="workflow_length", y="duration")
     ax.spines["right"].set_visible(False)
     ax.spines["top"].set_visible(False)
     ax.spines["left"].set_linewidth(1.3)
     ax.spines["bottom"].set_linewidth(1.3)
-    plt.ylim(0.6, 1)
     plt.xlabel("Workflow Length")
-    plt.ylabel("Time (ms)")
+    plt.ylabel("Time (s)")
+    plt.yscale('log')
     plt.grid(True, alpha=0.5, linestyle="--")
     plt.tight_layout()
-    # plt.legend().remove()
+    plt.legend(
+        loc=(0.01, 0.5),
+        ncol=2,
+        handlelength=1.1,
+        handletextpad=0.1,
+        columnspacing=0.6,
+        title=None,
+        frameon=False,
+        fontsize=10, )
     plt.savefig(
         os.path.join(
             FIGURE_DIR,
@@ -63,5 +75,5 @@ def plot_scalability():
     )
 
 
-plot_invocation_number_latency()
+# plot_invocation_number_latency()
 plot_scalability()
