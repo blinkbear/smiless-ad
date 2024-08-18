@@ -116,7 +116,7 @@ class PathSearch:
             return
         curr_df = df
         current_index = 0
-        devices = ("cpu", "cuda")
+        device = ("cpu", "cuda")
         open_list = PriorityQueue()
         open_list.put(PrioritizedItem(0, (0, current_running_time)))
         selected_devices = [""] * len(curr_df)
@@ -128,10 +128,7 @@ class PathSearch:
                 curr_df["device"] = selected_devices
                 self.available_solution = curr_df
                 return
-            device = (
-                devices[int(curr_df.at[current_index, "device_sorted"])],
-                devices[int(curr_df.at[current_index, "device_sorted"]) ^ 1],
-            )
+            
             for i in range(len(device)):
                 selected_devices[current_index] = device[i]
                 if curr_df.at[current_index, "device"] != device[i]:
