@@ -45,7 +45,7 @@ def plot_scalability():
     df = pd.read_csv(os.path.join(BASE_DIR, "data", "co_optimizer_overhead.csv"))
     df['optimizer_names']=df['optimizer_names'].apply(lambda row: "SMIless" if len(row.split("-"))==1 else row.split("-")[1].upper())
     df['optimizer_names']=df['optimizer_names'].apply(lambda row: r"$A^\bigstar$" if row=='ASTAR' else row)
-
+    df['optimizer_names']=df['optimizer_names'].apply(lambda row: "S-Top2" if row=='AUG' else row)
     
     ax = sns.lineplot(data=df,hue='optimizer_names', x="workflow_length", y="duration")
     ax.spines["right"].set_visible(False)

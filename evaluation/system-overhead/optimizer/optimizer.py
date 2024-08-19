@@ -33,6 +33,9 @@ class OptimizerFactory:
         if "smiless" not in self.factories:
             smiless = SMIless()
             self.factories["smiless"] = smiless
+        if "smiless-aug" not in self.factories:
+            self.factories["smiless-aug"] = SMIlessAug(
+            )
         if "smiless-bfs" not in self.factories:
                 self.factories["smiless-bfs"] = SMIlessBFS(
                 )
@@ -42,7 +45,5 @@ class OptimizerFactory:
         if "smiless-astar" not in self.factories:
             self.factories["smiless-astar"] = SMIlessAstar(
             )
-        if "smiless-aug" not in self.factories:
-            self.factories["smiless-aug"] = SMIlessAug(
-            )
+        
         return self.factories
